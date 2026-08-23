@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyector Relbase</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; max-width: 800px; margin-top: 20px;}
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #002b5c; color: white; }
+        .Critico { background-color: #ffcccc; color: #990000; font-weight: bold;}
+        .Alerta { background-color: #fff3cd; color: #856404; }
+        .Optimo { background-color: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+    <h1>Estado de Abastecimiento (Relbase)</h1>
+    <p>Historial de productos consultados.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Stock Actual</th>
+                <th>Ventas Esperadas</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- El bucle for de Django recorre el JSON -->
+            {% for item in registros %}
+            <tr>
+                <td>{{ item.Producto }}</td>
+                <td>{{ item.Stock }}</td>
+                <td>{{ item.Ventas }}</td>
+                
+                <!-- Condicional simple de interfaz para colores -->
+                <td class="
+                    {% if 'Crítico' in item.Estado %}Critico
+                    {% elif 'Alerta' in item.Estado %}Alerta
+                    {% elif 'Óptimo' in item.Estado %}Optimo
+                    {% endif %}
+                ">
+                    {{ item.Estado }}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay datos de abastecimiento registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
