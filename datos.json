@@ -1,0 +1,14 @@
+[
+    {
+        "Producto": "Aguas",
+        "Stock": 20,
+        "Ventas": 400,
+        "Estado": "Cr\u00edtico: Requiere compra urgente."
+    },
+    {
+        "Producto": "Gasas",
+        "Stock": 40,
+        "Ventas": 20,
+        "Estado": "\u00d3ptimo: Cubre el mes completo."
+    }
+]
