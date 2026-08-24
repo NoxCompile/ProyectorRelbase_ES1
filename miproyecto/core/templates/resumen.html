@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TREWA | Proyección Relbase</title>
+    <title>TREWA | Logística Relbase</title>
     <style>
-        /* Paleta de colores extraída de trewa.cl */
         :root {
             --trewa-azul: #103084;
             --trewa-verde: #20dfa4;
@@ -16,7 +15,7 @@
 
         body {
             font-family: var(--fuente-principal);
-            background-color: var(--fondo-blanco);
+            background-color: #f4f6f9; /* Fondo ligeramente gris para contraste de dashboard */
             color: var(--texto-oscuro);
             margin: 0;
             padding: 0;
@@ -25,159 +24,157 @@
         /* Encabezado Superior (Logo) */
         .header-top {
             background-color: var(--fondo-blanco);
-            padding: 20px 50px;
+            padding: 15px 40px;
             display: flex;
             align-items: center;
+            border-bottom: 1px solid #ddd;
         }
 
         .logo-texto {
-            font-size: 38px;
+            font-size: 32px;
             font-weight: 900;
             color: var(--trewa-azul);
-            letter-spacing: -2px;
+            letter-spacing: -1.5px;
             margin: 0;
             font-family: "Arial Black", Arial, sans-serif;
         }
+        
+        .header-tag {
+            margin-left: 20px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            border-left: 2px solid #ddd;
+            padding-left: 20px;
+        }
 
-        /* Barra de Navegación Azul */
+        /* Barra de Navegación Logística */
         .navbar {
             background-color: var(--trewa-azul);
             color: var(--fondo-blanco);
-            padding: 15px 50px;
+            padding: 12px 40px;
             display: flex;
-            gap: 25px;
-            font-weight: bold;
-            font-size: 13px;
+            gap: 30px;
+            font-weight: 600;
+            font-size: 12px;
             text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .navbar span {
             cursor: pointer;
             letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+        
+        .navbar span:hover {
+            opacity: 1;
         }
 
         /* Contenedor del Dashboard */
         .container {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 20px;
-            min-height: 40vh;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--fondo-blanco);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            min-height: 50vh;
         }
 
         .titulo-seccion {
-            text-align: center;
             color: var(--trewa-azul);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--trewa-verde);
+            padding-bottom: 10px;
+            display: inline-block;
         }
 
-        .linea-separadora {
-            width: 100%;
-            height: 2px;
-            background-color: var(--trewa-azul);
-            margin-bottom: 40px;
-        }
-
-        /* Estilos de la Tabla de Abastecimiento */
+        /* Estilos de la Tabla */
         table {
             width: 100%;
             border-collapse: collapse;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         th, td {
-            padding: 16px 20px;
+            padding: 14px 18px;
             text-align: left;
             border-bottom: 1px solid #eeeeee;
         }
 
         th {
             background-color: #f8f9fa;
-            color: var(--trewa-azul);
-            font-weight: 800;
+            color: #555;
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: 12px;
+            letter-spacing: 0.5px;
         }
 
         td {
-            font-size: 15px;
+            font-size: 14px;
+            color: #444;
         }
 
         /* Indicadores de Estado (Badges) */
         .badge {
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
-        .Critico { background-color: #e53935; color: white; }
-        .Alerta { background-color: #fb8c00; color: white; }
-        .Optimo { background-color: var(--trewa-verde); color: var(--trewa-azul); }
+        .Critico { background-color: #ffebee; color: #c62828; }
+        .Alerta { background-color: #fff8e1; color: #f57f17; }
+        .Optimo { background-color: #e8f5e9; color: #2e7d32; }
 
-        /* Pie de Página (Footer Verde) */
+        /* Pie de Página Técnico */
         .footer {
-            background-color: var(--trewa-verde);
-            color: var(--trewa-azul);
-            padding: 50px;
-            display: flex;
-            justify-content: space-around;
-            font-weight: 800;
-            margin-top: 50px;
-        }
-
-        .footer-col h4 {
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-size: 15px;
-        }
-
-        .footer-col p {
-            margin: 8px 0;
-            font-size: 14px;
-            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 12px;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header similar a trewa.cl -->
+    <!-- Encabezado Logístico -->
     <div class="header-top">
         <h1 class="logo-texto">TREWA</h1>
+        <div class="header-tag">Sistema de Logística y Abastecimiento</div>
     </div>
 
-    <!-- Navegación -->
+    <!-- Navegación Interna -->
     <div class="navbar">
-        <span>Inicio</span>
-        <span>Categorías</span>
-        <span>Outlet</span>
-        <span>Quienes Somos</span>
-        <span>Contacto</span>
-        <span style="color: var(--trewa-verde);">◉ Proyección Relbase</span>
+        <span>Resumen General</span>
+        <span>Inventario Base</span>
+        <span style="color: var(--trewa-verde); opacity: 1;">◉ Proyección Relbase</span>
+        <span>Órdenes de Compra</span>
+        <span>Reportes Exportables</span>
     </div>
 
     <!-- Contenido Principal -->
     <div class="container">
-        <h2 class="titulo-seccion">Proyección de Abastecimiento Interno</h2>
-        <div class="linea-separadora"></div>
+        <h2 class="titulo-seccion">Monitor de Cobertura Mensual</h2>
 
         <table>
             <thead>
                 <tr>
                     <th>Producto (SKU)</th>
-                    <th>Stock Actual</th>
-                    <th>Proyección Mensual</th>
-                    <th>Estado de Acción</th>
+                    <th>Stock Físico (Unidades)</th>
+                    <th>Venta Proyectada (Mensual)</th>
+                    <th>Estado de Cobertura</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Bucle de Django inyectando datos del JSON -->
                 {% for item in registros %}
                 <tr>
                     <td><strong>{{ item.Producto }}</strong></td>
@@ -196,8 +193,8 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 40px; color: #888;">
-                        No hay registros en el archivo JSON. Ejecute la lógica en terminal primero.
+                    <td colspan="4" style="text-align: center; padding: 30px; color: #888; font-style: italic;">
+                        Sin datos registrados. Procese el reporte base en consola.
                     </td>
                 </tr>
                 {% endfor %}
@@ -205,28 +202,9 @@
         </table>
     </div>
 
-    <!-- Pie de página extraído de capturas -->
+    <!-- Footer Técnico -->
     <div class="footer">
-        <div class="footer-col">
-            <h4>TREWA SPA</h4>
-            <p>La Parcelas 7950, Nave 2 Bodega 7,</p>
-            <p>Peñalolen</p>
-            <p style="margin-top: 15px;">+56 9 4449 7791</p>
-            <p>francisco@trewa.cl</p>
-        </div>
-        <div class="footer-col">
-            <h4>Lo mejor de TREWA.CL</h4>
-            <p>Insumos Médicos</p>
-            <p>Clínica Dental</p>
-            <p>Artículos De Oficina</p>
-            <p>Productos De Limpieza</p>
-        </div>
-        <div class="footer-col">
-            <h4>Políticas de la tienda</h4>
-            <p>Términos Y Condiciones</p>
-            <p>Políticas De Privacidad Y Cookies</p>
-            <p>Políticas De Envíos Y Devoluciones</p>
-        </div>
+        &copy; 2026 TREWA SpA - Módulo Interno de Operaciones | Versión 1.0.0 (MVP)
     </div>
 
 </body>
