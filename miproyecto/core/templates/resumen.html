@@ -2,54 +2,232 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Proyector Relbase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TREWA | Proyección Relbase</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; max-width: 800px; margin-top: 20px;}
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #002b5c; color: white; }
-        .Critico { background-color: #ffcccc; color: #990000; font-weight: bold;}
-        .Alerta { background-color: #fff3cd; color: #856404; }
-        .Optimo { background-color: #d4edda; color: #155724; }
+        /* Paleta de colores extraída de trewa.cl */
+        :root {
+            --trewa-azul: #103084;
+            --trewa-verde: #20dfa4;
+            --fondo-blanco: #ffffff;
+            --texto-oscuro: #333333;
+            --fuente-principal: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-principal);
+            background-color: var(--fondo-blanco);
+            color: var(--texto-oscuro);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Encabezado Superior (Logo) */
+        .header-top {
+            background-color: var(--fondo-blanco);
+            padding: 20px 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-texto {
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--trewa-azul);
+            letter-spacing: -2px;
+            margin: 0;
+            font-family: "Arial Black", Arial, sans-serif;
+        }
+
+        /* Barra de Navegación Azul */
+        .navbar {
+            background-color: var(--trewa-azul);
+            color: var(--fondo-blanco);
+            padding: 15px 50px;
+            display: flex;
+            gap: 25px;
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .navbar span {
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contenedor del Dashboard */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+            min-height: 40vh;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            color: var(--trewa-azul);
+            font-size: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .linea-separadora {
+            width: 100%;
+            height: 2px;
+            background-color: var(--trewa-azul);
+            margin-bottom: 40px;
+        }
+
+        /* Estilos de la Tabla de Abastecimiento */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: var(--trewa-azul);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        /* Indicadores de Estado (Badges) */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .Critico { background-color: #e53935; color: white; }
+        .Alerta { background-color: #fb8c00; color: white; }
+        .Optimo { background-color: var(--trewa-verde); color: var(--trewa-azul); }
+
+        /* Pie de Página (Footer Verde) */
+        .footer {
+            background-color: var(--trewa-verde);
+            color: var(--trewa-azul);
+            padding: 50px;
+            display: flex;
+            justify-content: space-around;
+            font-weight: 800;
+            margin-top: 50px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 15px;
+        }
+
+        .footer-col p {
+            margin: 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
-    <h1>Estado de Abastecimiento (Relbase)</h1>
-    <p>Historial de productos consultados.</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Stock Actual</th>
-                <th>Ventas Esperadas</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- El bucle for de Django recorre el JSON -->
-            {% for item in registros %}
-            <tr>
-                <td>{{ item.Producto }}</td>
-                <td>{{ item.Stock }}</td>
-                <td>{{ item.Ventas }}</td>
-                
-                <!-- Condicional simple de interfaz para colores -->
-                <td class="
-                    {% if 'Crítico' in item.Estado %}Critico
-                    {% elif 'Alerta' in item.Estado %}Alerta
-                    {% elif 'Óptimo' in item.Estado %}Optimo
-                    {% endif %}
-                ">
-                    {{ item.Estado }}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No hay datos de abastecimiento registrados.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Header similar a trewa.cl -->
+    <div class="header-top">
+        <h1 class="logo-texto">TREWA</h1>
+    </div>
+
+    <!-- Navegación -->
+    <div class="navbar">
+        <span>Inicio</span>
+        <span>Categorías</span>
+        <span>Outlet</span>
+        <span>Quienes Somos</span>
+        <span>Contacto</span>
+        <span style="color: var(--trewa-verde);">◉ Proyección Relbase</span>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container">
+        <h2 class="titulo-seccion">Proyección de Abastecimiento Interno</h2>
+        <div class="linea-separadora"></div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto (SKU)</th>
+                    <th>Stock Actual</th>
+                    <th>Proyección Mensual</th>
+                    <th>Estado de Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Bucle de Django inyectando datos del JSON -->
+                {% for item in registros %}
+                <tr>
+                    <td><strong>{{ item.Producto }}</strong></td>
+                    <td>{{ item.Stock }}</td>
+                    <td>{{ item.Ventas }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if 'Crítico' in item.Estado %}Critico
+                            {% elif 'Alerta' in item.Estado %}Alerta
+                            {% elif 'Óptimo' in item.Estado %}Optimo
+                            {% endif %}
+                        ">
+                            {{ item.Estado }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 40px; color: #888;">
+                        No hay registros en el archivo JSON. Ejecute la lógica en terminal primero.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pie de página extraído de capturas -->
+    <div class="footer">
+        <div class="footer-col">
+            <h4>TREWA SPA</h4>
+            <p>La Parcelas 7950, Nave 2 Bodega 7,</p>
+            <p>Peñalolen</p>
+            <p style="margin-top: 15px;">+56 9 4449 7791</p>
+            <p>francisco@trewa.cl</p>
+        </div>
+        <div class="footer-col">
+            <h4>Lo mejor de TREWA.CL</h4>
+            <p>Insumos Médicos</p>
+            <p>Clínica Dental</p>
+            <p>Artículos De Oficina</p>
+            <p>Productos De Limpieza</p>
+        </div>
+        <div class="footer-col">
+            <h4>Políticas de la tienda</h4>
+            <p>Términos Y Condiciones</p>
+            <p>Políticas De Privacidad Y Cookies</p>
+            <p>Políticas De Envíos Y Devoluciones</p>
+        </div>
+    </div>
+
 </body>
 </html>
