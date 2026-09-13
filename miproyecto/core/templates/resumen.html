@@ -15,7 +15,7 @@
 
         body {
             font-family: var(--fuente-principal);
-            background-color: #f4f6f9; /* Fondo ligeramente gris para contraste de dashboard */
+            background-color: #f4f6f9;
             color: var(--texto-oscuro);
             margin: 0;
             padding: 0;
@@ -82,15 +82,31 @@
             min-height: 50vh;
         }
 
+        .header-dashboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--trewa-verde);
+            padding-bottom: 10px;
+        }
+
         .titulo-seccion {
             color: var(--trewa-azul);
             font-size: 20px;
             font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--trewa-verde);
-            padding-bottom: 10px;
-            display: inline-block;
+            margin: 0;
+        }
+
+        .btn-nuevo {
+            background-color: var(--trewa-verde);
+            color: var(--trewa-azul);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
         }
 
         /* Estilos de la Tabla */
@@ -133,6 +149,19 @@
         .Critico { background-color: #ffebee; color: #c62828; }
         .Alerta { background-color: #fff8e1; color: #f57f17; }
         .Optimo { background-color: #e8f5e9; color: #2e7d32; }
+        .Invalido { background-color: #e0e0e0; color: #616161; }
+
+        /* Botones de Acción en Tabla */
+        .btn-accion {
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 12px;
+            margin-right: 12px;
+            text-transform: uppercase;
+        }
+        
+        .btn-editar { color: var(--trewa-azul); }
+        .btn-eliminar { color: #c62828; }
 
         /* Pie de Página Técnico */
         .footer {
@@ -146,24 +175,24 @@
 </head>
 <body>
 
-    <!-- Encabezado Logístico -->
     <div class="header-top">
         <h1 class="logo-texto">TREWA</h1>
         <div class="header-tag">Sistema de Logística y Abastecimiento</div>
     </div>
 
-    <!-- Navegación Interna -->
     <div class="navbar">
         <span>Resumen General</span>
         <span>Inventario Base</span>
         <span style="color: var(--trewa-verde); opacity: 1;">◉ Proyección Relbase</span>
         <span>Órdenes de Compra</span>
-        <span>Reportes Exportables</span>
     </div>
 
-    <!-- Contenido Principal -->
     <div class="container">
-        <h2 class="titulo-seccion">Monitor de Cobertura Mensual</h2>
+        <div class="header-dashboard">
+            <h2 class="titulo-seccion">Monitor de Cobertura Mensual</h2>
+            <!-- Conexión a la vista 'crear' definida en urls.py -->
+            <a href="{% url 'crear' %}" class="btn-nuevo">+ Nuevo Registro</a>
+        </div>
 
         <table>
             <thead>
@@ -172,29 +201,38 @@
                     <th>Stock Físico (Unidades)</th>
                     <th>Venta Proyectada (Mensual)</th>
                     <th>Estado de Cobertura</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Bucle ahora lee los atributos del modelo de Django -->
                 {% for item in registros %}
                 <tr>
-                    <td><strong>{{ item.Producto }}</strong></td>
-                    <td>{{ item.Stock }}</td>
-                    <td>{{ item.Ventas }}</td>
+                    <td><strong>{{ item.producto }}</strong></td>
+                    <td>{{ item.stock_actual }}</td>
+                    <td>{{ item.ventas_esperadas }}</td>
                     <td>
                         <span class="badge 
-                            {% if 'Crítico' in item.Estado %}Critico
-                            {% elif 'Alerta' in item.Estado %}Alerta
-                            {% elif 'Óptimo' in item.Estado %}Optimo
+                            {% if 'Critico' in item.estado %}Critico
+                            {% elif 'Alerta' in item.estado %}Alerta
+                            {% elif 'Optimo' in item.estado %}Optimo
+                            {% else %}Invalido
                             {% endif %}
                         ">
-                            {{ item.Estado }}
+                            <!-- Django renderizará la versión legible definida en ESTADO_CHOICES -->
+                            {{ item.get_estado_display }}
                         </span>
+                    </td>
+                    <td>
+                        <!-- Conexión a las vistas 'editar' y 'eliminar' enviando la Primary Key (pk) -->
+                        <a href="{% url 'editar' item.pk %}" class="btn-accion btn-editar">Editar</a>
+                        <a href="{% url 'eliminar' item.pk %}" class="btn-accion btn-eliminar">Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 30px; color: #888; font-style: italic;">
-                        Sin datos registrados. Procese el reporte base en consola.
+                    <td colspan="5" style="text-align: center; padding: 30px; color: #888; font-style: italic;">
+                        Sin datos registrados. Agregue un nuevo producto al sistema.
                     </td>
                 </tr>
                 {% endfor %}
@@ -202,9 +240,8 @@
         </table>
     </div>
 
-    <!-- Footer Técnico -->
     <div class="footer">
-        &copy; 2026 TREWA SpA - Módulo Interno de Operaciones | Versión 1.0.0 (MVP)
+        &copy; 2026 TREWA SpA - Módulo Interno de Operaciones | Versión 2.0 (SQLite CRUD)
     </div>
 
 </body>

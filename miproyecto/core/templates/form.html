@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TREWA | {{ accion }} Registro</title>
+    <style>
+        body { font-family: -apple-system, Arial, sans-serif; background-color: #f4f6f9; padding: 40px; }
+        .container { max-width: 500px; background: white; padding: 30px; border-radius: 8px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn { background-color: #103084; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-cancel { background-color: #ccc; color: #333; text-decoration: none; padding: 10px 15px; border-radius: 4px; margin-left: 10px; }
+        .error { background-color: #ffebee; color: #c62828; padding: 10px; margin-bottom: 20px; border-radius: 4px; }
+        input { width: 100%; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #103084;">{{ accion }} Registro Logístico</h2>
+        
+        {% if error %}
+        <div class="error"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <!-- Token de seguridad obligatorio contra falsificación de peticiones -->
+            {% csrf_token %}
+            
+            <label>Producto (SKU):</label>
+            <input type="text" name="producto" value="{{ registro.producto }}" required>
+            
+            <label>Stock Físico (Unidades):</label>
+            <input type="number" name="stock_actual" value="{{ registro.stock_actual }}" required>
+            
+            <label>Ventas Esperadas (Mensual):</label>
+            <input type="number" name="ventas_esperadas" value="{{ registro.ventas_esperadas }}" required>
+            
+            <button type="submit" class="btn">Guardar Registro</button>
+            <a href="{% url 'lista' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
