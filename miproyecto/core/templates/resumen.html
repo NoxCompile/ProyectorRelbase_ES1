@@ -185,9 +185,19 @@
         <span>Inventario Base</span>
         <span style="color: var(--trewa-verde); opacity: 1;">◉ Proyección Relbase</span>
         <span>Órdenes de Compra</span>
+        <a href="{% url 'logout' %}" style="color: #ff8a80; margin-left: auto; text-decoration: none; font-weight: 800; letter-spacing: 0.5px;">
+            SALIR [{{ request.user.username }}]
+        </a>
     </div>
 
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div style="background-color: #ffebee; color: #c62828; padding: 15px; margin-bottom: 25px; border-radius: 4px; font-weight: bold; text-align: center; border: 1px solid #c62828;">
+                    ⚠️ {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="header-dashboard">
             <h2 class="titulo-seccion">Monitor de Cobertura Mensual</h2>
             <!-- Conexión a la vista 'crear' definida en urls.py -->
