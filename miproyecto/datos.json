@@ -10,5 +10,17 @@
         "Stock": 40,
         "Ventas": 20,
         "Estado": "\u00d3ptimo: Cubre el mes completo."
+    },
+    {
+        "Producto": "Jeringas",
+        "Stock": 10,
+        "Ventas": 100,
+        "Estado": "Cr\u00edtico: Requiere compra urgente."
+    },
+    {
+        "Producto": "Guantes",
+        "Stock": 50,
+        "Ventas": 30,
+        "Estado": "\u00d3ptimo: Cubre el mes completo."
     }
 ]
