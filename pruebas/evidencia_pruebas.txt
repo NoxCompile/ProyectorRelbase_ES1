@@ -1,0 +1,120 @@
+Evidencia generada el 2026-10-05 21:53 · tokens truncados
+
+=== 1. POST /token/ · 200 OK ===
+{"refresh":"eyJhbGci...(truncado)","access":"eyJhbGci...(truncado)"}
+
+=== 2. GET /registros/ · 401 sin token ===
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+WWW-Authenticate: Bearer realm="api"
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 65
+
+{"detail":"Las credenciales de autenticación no se proveyeron."}
+
+
+=== 3. POST /registros/ · 201 (normal; manda estado=Optimo y la regla lo ignora) ===
+HTTP/1.1 201 Created
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 132
+
+{"id":4,"producto":"Gasas","stock_actual":2,"ventas_esperadas":10,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:53.207003Z"}
+
+
+=== 4. POST /registros/ · 400 (stock negativo) ===
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 59
+
+{"stock_actual":["El stock actual no puede ser negativo."]}
+
+
+=== 5. GET /registros/ · 200 lista paginada (viewer) ===
+HTTP/1.1 200 OK
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 596
+
+{"count":4,"next":null,"previous":null,"results":[{"id":4,"producto":"Gasas","stock_actual":2,"ventas_esperadas":10,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:53.207003Z"},{"id":3,"producto":"Mascarillas","stock_actual":150,"ventas_esperadas":100,"estado":"Optimo","fecha_consulta":"2026-10-05T21:53:46.504111Z"},{"id":2,"producto":"Guantes","stock_actual":60,"ventas_esperadas":100,"estado":"Alerta","fecha_consulta":"2026-10-05T21:53:46.502800Z"},{"id":1,"producto":"Aguas","stock_actual":20,"ventas_esperadas":400,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:46.499213Z"}]}
+
+
+=== 6. GET /registros/?estado=Critico · 200 filtro (viewer) ===
+HTTP/1.1 200 OK
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 319
+
+{"count":2,"next":null,"previous":null,"results":[{"id":4,"producto":"Gasas","stock_actual":2,"ventas_esperadas":10,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:53.207003Z"},{"id":1,"producto":"Aguas","stock_actual":20,"ventas_esperadas":400,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:46.499213Z"}]}
+
+
+=== 7. GET /registros/?estado=Nada · 400 filtro inválido ===
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 73
+
+{"estado":"Valor inválido. Opciones: Optimo, Alerta, Critico, Invalido"}
+
+
+=== 8. GET /registros/4/ · 200 detalle ===
+HTTP/1.1 200 OK
+Content-Type: application/json
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 132
+
+{"id":4,"producto":"Gasas","stock_actual":2,"ventas_esperadas":10,"estado":"Critico","fecha_consulta":"2026-10-05T21:53:53.207003Z"}
+
+
+=== 9. POST /registros/ · 403 (viewer solo lee) ===
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 58
+
+{"detail":"Tu rol no tiene permiso para esta operación."}
+
+
+=== 10. PATCH /registros/4/ · 403 (normal no edita) ===
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 58
+
+{"detail":"Tu rol no tiene permiso para esta operación."}
+
+
+=== 11. PATCH /registros/4/ · 200 (admin; el estado se recalcula) ===
+HTTP/1.1 200 OK
+Content-Type: application/json
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 134
+
+{"id":4,"producto":"Gasas","stock_actual":1000,"ventas_esperadas":10,"estado":"Optimo","fecha_consulta":"2026-10-05T21:53:53.207003Z"}
+
+
+=== 12. DELETE /registros/4/ · 403 (normal no borra) ===
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 58
+
+{"detail":"Tu rol no tiene permiso para esta operación."}
+
+
+=== 13. DELETE /registros/4/ · 204 (admin; borrado lógico) ===
+HTTP/1.1 204 No Content
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 0
+
+
+
+=== 14. GET /registros/4/ · 404 (ya borrado lógicamente) ===
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Length: 105
+
+{"error":"Recurso no encontrado","detalle":"La ruta o el ID que intentas consultar no existe en la API."}
+

@@ -1,12 +1,19 @@
-# Uso de Inteligencia Artificial (ia.md)
+# Uso Crítico de Inteligencia Artificial
 
-**1. Herramienta utilizada y propósito:**
-Utilicé un asistente de IA basado en LLM (Gemini/ChatGPT) como copiloto para estructurar el archivo `plan.md` inicial y generar la estructura base de la regla de decisión en Python.
+### Incidente 1: Arquitectura y Enrutamiento (Criterio 3.1.4)
+* **Qué pedí:** Generar el ViewSet y actualizar el archivo `urls.py` con el `DefaultRouter` para la API.
+* **Qué respondió la IA:** Reescribió mi `miproyecto/urls.py` agregando `path("", include("core.urls"))`, borrando las rutas previas.
+* **Qué estaba mal:** Esto rompió el proyecto con un `ModuleNotFoundError` (mi app no usaba `core.urls`). Al borrar mis rutas originales, la IA violó la regla principal de la ES3: mantener vivas y funcionales las pantallas HTML de la ES2.
+* **Qué hice yo:** Rechacé el código. Extraje mi enrutamiento original de la ES2 (`views.lista`, `views.crear`, etc.) y lo unifiqué manualmente bajo las rutas de la API, logrando que ambas interfaces convivan.
 
-**2. Consulta concreta realizada:**
-Prompt: *"Soy estudiante de programación back end. Quiero resolver este problema: En mi trabajo extraemos reportes de ventas del sistema Relbase, pero debo calcular manualmente en Excel cuánto stock necesitamos para cubrir el mes, perdiendo tiempo y arriesgando quiebres. Ayúdame a escribir un plan con dos apartados (Negocio y Técnico) y la priorización MoSCoW. Restricción: se resuelve con variables, if/elif, un archivo JSON y una sola vista Django. Sin base de datos."*
+### Incidente 2: Seguridad y Autenticación (Criterio 3.1.2)
+* **Qué pedí:** Una configuración para probar los endpoints localmente en el navegador sin bloquearme por autenticación.
+* **Qué respondió la IA:** Sugirió modificar `DEFAULT_PERMISSION_CLASSES` a `AllowAny` en `settings.py` y usar `@csrf_exempt`.
+* **Qué estaba mal:** Usar `AllowAny` deja la API abierta a internet. Apagar la seguridad para probar es una pésima práctica que el criterio 3.1.2 castiga.
+* **Qué hice yo:** Descarté la sugerencia. Mantuve `IsAuthenticated` global, configuré `djangorestframework-simplejwt` y creé la clase `PermisosES2` basándome en mi lógica previa (`tiene_rol`). Verifiqué todo inyectando el token por cURL.
 
-**3. Análisis crítico y corrección humana:**
-La IA me entregó una buena estructura para el MoSCoW, pero cometió dos errores técnicos en su propuesta de código inicial que tuve que corregir manualmente:
-* **El orden del algoritmo:** La IA posicionó el caso de éxito ("Óptimo") en el primer `if` y dejó el error de "Dato Inválido" al final del `else`. Corregí esto en mi archivo `solucion.py`, colocando la validación de números negativos (`stock_actual < 0`) en la parte superior del bloque `if`. Si no lo hacía, el programa habría procesado números falsos antes de atrapar el error.
-* **Sobrescritura de datos:** La IA sugirió un script que sobreescribía el archivo JSON en cada ejecución. Tuve que importar la librería `os` en Python e implementar `os.path.exists()` para cargar el historial anterior, hacer un `.append()` del nuevo registro, y recién ahí volver a guardar, logrando un historial real que luego inyecté a la vista de Django.
+### Incidente 3: Lógica en los Serializadores (Criterio 3.1.3)
+* **Qué pedí:** Generar el serializador para el modelo `Registro`.
+* **Qué respondió la IA:** Sugirió `fields = "__all__"` y omitió proteger los campos calculados.
+* **Qué estaba mal:** Exponía campos de auditoría (`eliminado`, `fecha_eliminacion`) y permitía editar el campo `estado`, lo cual anula mi regla de negocio.
+* **Qué hice yo:** Definí explícitamente la lista `fields`, incluí el `id` y marqué `estado` y `fecha_consulta` como `read_only_fields`.
